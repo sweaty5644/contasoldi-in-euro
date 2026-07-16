@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💶 Contasoldi Euro - Calcolatore Denaro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e3a5f;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .user-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+
+        .user-section h3 {
+            margin-bottom: 15px;
+            color: #1e3a5f;
+        }
+
+        .user-section input {
+            padding: 10px;
+            font-size: 1.1em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .user-section button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .user-section button:hover {
+            background: #2980b9;
+        }
+
+        .user-info {
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+
+        .user-info button {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid #f1c403;
+        }
+
+        .money-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .money-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .money-image {
+            width: 100%;
+            height: 80px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.4em;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .banknote-500 { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .banknote-200 { background: linear-gradient(135deg, #f1c40f, #d4ac0d); }
+        .banknote-100 { background: linear-gradient(135deg, #27ae60, #1e8449); }
+        .banknote-50 { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .banknote-20 { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .banknote-10 { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .banknote-5 { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+
+        .coin-2, .coin-1 { 
+            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .coin-50, .coin-20, .coin-10 { 
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .coin-5, .coin-2c, .coin-1c { 
+            background: linear-gradient(135deg, #cd7f32, #a0522d);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .money-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .control-btn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .control-btn.minus {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .control-btn.plus {
+            background: #27ae60;
+            color: white;
+        }
+
+        .quantity {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1e3a5f;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .subtotal {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .total-amount {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #1e3a5f;
+        }
+
+        .total-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .total-label {
+            font-size: 1.5em;
+            color: #1e3a5f;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .total-value {
+            font-size: 2.5em;
+            color: #1e3a5f;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary { background: #3498db; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-danger { background: #e74c3c; color: white; }
+        .btn-warning { background: #f39c12; color: white; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #1e3a5f;
+        }
+
+        .close-modal {
+            font-size: 1.8em;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #e74c3c;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #27ae60;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 2px solid #27ae60;
+        }
+
+        .history-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .history-date {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .history-total {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .save-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: none;
+            z-index: 2000;
+        }
+
+        /* Zona nascosta a schermo usata unicamente per stampare lo scontrino ufficiale */
+        #receipt-print-zone {
+            display: none;
+        }
+
+        /* ==================== REGOLE DI STAMPA SEPARATE ==================== */
+        @media print {
+            /* Nasconde interamente il sito, compresi header, calcolatore, modali e notifiche */
+            body > *:not(#receipt-print-zone) {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            /* Mostra solo ed esclusivamente la ricevuta formattata */
+            #receipt-print-zone {
+                display: block !important;
+                width: 100% !important;
+                max-width: 80mm; /* Formato scontrino standard */
+                margin: 0 auto;
+                padding: 10px;
+                font-family: 'Courier New', Courier, monospace; /* Tipico stile cassa */
+                font-size: 12px;
+                color: #000;
+            }
+            .print-header {
+                text-align: center;
+                border-bottom: 1px dashed #000;
+                padding-bottom: 10px;
+                margin-bottom: 12px;
+            }
+            .print-title {
+                font-size: 1.3em;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .print-meta {
+                font-size: 0.85em;
+                margin-top: 5px;
+                line-height: 1.3;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 12px;
+            }
+            .print-table th, .print-table td {
+                padding: 4px 0;
+                text-align: left;
+            }
+            .print-table th {
+                border-bottom: 1px solid #000;
+                font-weight: bold;
+            }
+            .print-table td.amount {
+                text-align: right;
+            }
+            .print-total {
+                border-top: 1px dashed #000;
+                padding-top: 8px;
+                font-size: 1.2em;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+            }
+            .print-footer {
+                text-align: center;
+                margin-top: 25px;
+                font-size: 0.8em;
+                border-top: 1px dashed #000;
+                padding-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>💶 Contasoldi Euro</h1>
+    </div>
+
+    <div class="user-section" id="loginSection">
+        <h3>🔐 Accedi per salvare i tuoi resoconti</h3>
+        <input type="text" id="userCode" placeholder="Inserisci il tuo codice utente">
+        <div>
+            <button onclick="login()">Accedi</button>
+            <button onclick="register()" style="background: #27ae60;">Registrati</button>
+        </div>
+    </div>
+
+    <div class="user-info" id="userInfo" style="display: none;">
+        👤 Utente: <strong id="currentUserName"></strong>
+        <div id="lastAccessTime" style="font-size: 0.8em; margin-top: 5px; color: #ddd;"></div>
+        <button onclick="logout()" style="margin-top: 8px;">Esci</button>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Banconote</h2>
+        <div class="money-grid" id="banknotes-grid"></div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Monete</h2>
+        <div class="money-grid" id="coins-grid"></div>
+    </div>
+
+    <div class="total-section">
+        <div class="total-label">Totale complessivo</div>
+        <div class="total-value" id="total-amount">€ 0,00</div>
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="generateReport()">📄 Genera Resoconto</button>
+            <button class="btn btn-success" onclick="saveAndPrint()">🖨️ Salva e Stampa</button>
+            <button class="btn btn-warning" onclick="showHistory()">📋 Cronologia</button>
+            <button class="btn btn-danger" onclick="resetAll()">🗑️ Azzera</button>
+        </div>
+    </div>
+
+    <!-- Modale Resoconto a schermo -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 Resoconto Rapido</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="report-content"></div>
+        </div>
+    </div>
+
+    <!-- Modale Cronologia -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>📋 La tua Cronologia</h2>
+                <span class="close-modal" onclick="closeHistory()">&times;</span>
+            </div>
+            <div id="history-content"></div>
+        </div>
+    </div>
+
+    <!-- Area Invisibile a Schermo, Dedicata alla Stampa -->
+    <div id="receipt-print-zone"></div>
+
+    <div id="saveIndicator" class="save-indicator">
+        ✅ Resoconto salvato in Database!
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ========== CONFIGURAZIONE FIREBASE ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyDe-4CJQUAtFNACpSZu0mN6iHJjPtbCj0",
+            authDomain: "contasoldi-d774a.firebaseapp.com",
+            databaseURL: "https://contasoldi-d774a-default-rtdb.europe-west1.firebasedatabase.app/", 
+            projectId: "contasoldi-d774a",
+            storageBucket: "contasoldi-d774a.firebasestorage.app",
+            messagingSenderId: "916515348477",
+            appId: "1:916515348477:web:e10c3ec3db55318a4f94"
+        };
+
+        let db = null;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (e) {
+            console.error("Errore Firebase:", e);
+        }
+
+        let currentUser = null;
+        let quantities = {};
+        let holdInterval = null;
+        let holdTimeout = null;
+        let currentBtn = null;
+
+        const banknotes = [
+            { value: 500, class: 'banknote-500' },
+            { value: 200, class: 'banknote-200' },
+            { value: 100, class: 'banknote-100' },
+            { value: 50, class: 'banknote-50' },
+            { value: 20, class: 'banknote-20' },
+            { value: 10, class: 'banknote-10' },
+            { value: 5, class: 'banknote-5' }
+        ];
+
+        const coins = [
+            { value: 2, class: 'coin-2' },
+            { value: 1, class: 'coin-1' },
+            { value: 0.50, class: 'coin-50' },
+            { value: 0.20, class: 'coin-20' },
+            { value: 0.10, class: 'coin-10' },
+            { value: 0.05, class: 'coin-5' },
+            { value: 0.02, class: 'coin-2c' },
+            { value: 0.01, class: 'coin-1c' }
+        ];
+
+        function init() {
+            banknotes.forEach(note => quantities[note.value] = 0);
+            coins.forEach(coin => quantities[coin.value] = 0);
+            renderBanknotes();
+            renderCoins();
+            updateTotal();
+            
+            const savedUser = localStorage.getItem('contasoldi_user');
+            if (savedUser) {
+                currentUser = savedUser;
+                showUserInfo();
+            }
+        }
+
+        function register() {
+            const code = document.getElementById('userCode').value.trim();
+            if (!code) {
+                alert('Inserisci un codice utente!');
+                return;
+            }
+            if (!db) return;
+
+            db.ref('users/' + code).once('value').then(snapshot => {
+                if (snapshot.exists()) {
+                    alert('Questo codice esiste già! Accedi.');
+                } else {
+                    const now = new Date();
+                    db.ref('users/' + code).set({
+                        createdAt: now.toISOString(),
+                        lastLogin: now.toISOString(),
+                        code: code
+                    }).then(() => {
+                        currentUser = code;
+                        localStorage.setItem('contasoldi_user', code);
+                        showUserInfo(now.toISOString());
+                        alert('Registrato con successo!');
+                    });
+                }
+            });
+        }
+
+        function login() {
+            const code = document.getElementById('userCode').value.trim();
+            if (!code) {
+                alert('Inserisci il codice utente!');
+                return;
+            }
+            if (!db) return;
+
+            db.ref('users/' + code).once('value').then(snapshot => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const lastAccess = data.lastLogin || new Date().toISOString();
+                    const now = new Date();
+                    
+                    db.ref('users/' + code).update({
+                        lastLogin: now.toISOString()
+                    }).then(() => {
+                        currentUser = code;
+                        localStorage.setItem('contasoldi_user', code);
+                        showUserInfo(lastAccess);
+                    });
+                } else {
+                    alert('Codice non trovato. Registrati prima!');
+                }
+            });
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('contasoldi_user');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('userInfo').style.display = 'none';
+            resetAll(true);
+        }
+
+        function showUserInfo(lastAccessIsoString) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'block';
+            document.getElementById('currentUserName').textContent = currentUser;
+            
+            if(lastAccessIsoString) {
+                const date = new Date(lastAccessIsoString);
+                const formattedDate = date.toLocaleDateString('it-IT') + " alle " + date.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'});
+                document.getElementById('lastAccessTime').innerHTML = `Ultimo accesso: <br><strong>${formattedDate}</strong>`;
+            } else {
+                document.getElementById('lastAccessTime').innerHTML = "";
+            }
+        }
+
+        function renderBanknotes() {
+            const grid = document.getElementById('banknotes-grid');
+            grid.innerHTML = banknotes.map(note => createCard(note.value, note.class)).join('');
+        }
+
+        function renderCoins() {
+            const grid = document.getElementById('coins-grid');
+            grid.innerHTML = coins.map(coin => createCard(coin.value, coin.class)).join('');
+        }
+
+        function createCard(value, cssClass) {
+            const displayValue = value >= 1 ? `€ ${value.toFixed(0)}` : `${(value * 100).toFixed(0)}c`;
+            return `
+                <div class="money-card">
+                    <div class="money-image ${cssClass}">${displayValue}</div>
+                    <div class="money-value">${displayValue}</div>
+                    <div class="quantity-controls">
+                        <button class="control-btn minus" 
+                                onmousedown="startHold(${value}, 'minus', this)" 
+                                onmouseup="endHold()" 
+                                onmouseleave="endHold()"
+                                ontouchstart="startHold(${value}, 'minus', this)" 
+                                ontouchend="endHold()">−</button>
+                        <div class="quantity" id="qty-${value}">0</div>
+                        <button class="control-btn plus" 
+                                onmousedown="startHold(${value}, 'plus', this)" 
+                                onmouseup="endHold()" 
+                                onmouseleave="endHold()"
+                                ontouchstart="startHold(${value}, 'plus', this)" 
+                                ontouchend="endHold()">+</button>
+                    </div>
+                    <div class="subtotal">× ${displayValue}</div>
+                    <div class="total-amount" id="total-${value}">€ 0,00</div>
+                </div>
+            `;
+        }
+
+        function startHold(value, operation, btn) {
+            currentBtn = btn;
+            btn.classList.add('holding');
+            updateQuantity(value, operation);
+            
+            holdTimeout = setTimeout(() => {
+                holdInterval = setInterval(() => {
+                    updateQuantity(value, operation);
+                }, 100);
+            }, 500);
+        }
+
+        function endHold() {
+            if (currentBtn) currentBtn.classList.remove('holding');
+            clearTimeout(holdTimeout);
+            clearInterval(holdInterval);
+            currentBtn = null;
+        }
+
+        function updateQuantity(value, operation) {
+            if (operation === 'plus') {
+                quantities[value]++;
+            } else if (operation === 'minus' && quantities[value] > 0) {
+                quantities[value]--;
+            }
+            updateDisplay(value);
+            updateTotal();
+        }
+
+        function updateDisplay(value) {
+            document.getElementById(`qty-${value}`).textContent = quantities[value];
+            const subtotal = quantities[value] * value;
+            document.getElementById(`total-${value}`).textContent = '€ ' + subtotal.toFixed(2).replace('.', ',');
+        }
+
+        function updateTotal() {
+            let total = 0;
+            for (let value in quantities) {
+                total += quantities[value] * parseFloat(value);
+            }
+            document.getElementById('total-amount').textContent = '€ ' + total.toFixed(2).replace('.', ',');
+        }
+
+        function resetAll(silent = false) {
+            if (silent || confirm('Sei sicuro di voler azzerare tutto?')) {
+                for (let value in quantities) {
+                    quantities[value] = 0;
+                    updateDisplay(value);
+                }
+                updateTotal();
+            }
+        }
+
+        // Genera il resoconto visivo per lo SCHERMO (Modal colorata)
+        function generateReport() {
+            let report = '<div class="summary-list">';
+            let total = 0;
+            let hasItems = false;
+            
+            banknotes.forEach(note => {
+                if (quantities[note.value] > 0) {
+                    hasItems = true;
+                    const subtotal = quantities[note.value] * note.value;
+                    total += subtotal;
+                    report += `<div class="summary-item"><span>€ ${note.value} × ${quantities[note.value]}</span><span>€ ${subtotal.toFixed(2).replace('.', ',')}</span></div>`;
+                }
+            });
+            
+            coins.forEach(coin => {
+                if (quantities[coin.value] > 0) {
+                    hasItems = true;
+                    const subtotal = quantities[coin.value] * coin.value;
+                    total += subtotal;
+                    report += `<div class="summary-item"><span>${coin.value >= 1 ? '€ ' + coin.value : (coin.value * 100).toFixed(0) + 'c'} × ${quantities[coin.value]}</span><span>€ ${subtotal.toFixed(2).replace('.', ',')}</span></div>`;
+                }
+            });
+            
+            if (!hasItems) {
+                report += '<p style="text-align:center;color:#999;padding:20px;">Nessun valore inserito</p>';
+            }
+            
+            report += `<div class="summary-item" style="border-top: 2px solid #27ae60; margin-top:15px; padding-top:10px;"><span>TOTALE COMPLESSIVO</span><span>€ ${total.toFixed(2).replace('.', ',')}</span></div></div>`;
+            
+            const reportHeader = `
+                <div style="border-bottom: 2px dashed #ddd; padding-bottom: 15px; margin-bottom: 15px; text-align:center;">
+                    <h3>Dettaglio Conteggio</h3>
+                    <p style="font-size: 0.9em; color: #555; margin-top:5px;">Operatore: <strong>${currentUser || 'Ospite'}</strong></p>
+                    <p style="font-size: 0.8em; color: #777;">Data: ${new Date().toLocaleString('it-IT')}</p>
+                </div>
+            `;
+
+            document.getElementById('report-content').innerHTML = reportHeader + report;
+            document.getElementById('reportModal').style.display = 'flex';
+        }
+
+        // Genera lo scontrino speciale da STAMPARE (Solo testo, stile scontrino reale)
+        function generatePrintReceipt(total) {
+            let tableRows = '';
+            
+            banknotes.forEach(note => {
+                if (quantities[note.value] > 0) {
+                    const subtotal = quantities[note.value] * note.value;
+                    tableRows += `
+                        <tr>
+                            <td>Banconota €${note.value}</td>
+                            <td style="text-align: center;">x${quantities[note.value]}</td>
+                            <td class="amount">€ ${subtotal.toFixed(2).replace('.', ',')}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            coins.forEach(coin => {
+                if (quantities[coin.value] > 0) {
+                    const subtotal = quantities[coin.value] * coin.value;
+                    const label = coin.value >= 1 ? `Moneta €${coin.value}` : `Moneta ${(coin.value * 100).toFixed(0)}c`;
+                    tableRows += `
+                        <tr>
+                            <td>${label}</td>
+                            <td style="text-align: center;">x${quantities[coin.value]}</td>
+                            <td class="amount">€ ${subtotal.toFixed(2).replace('.', ',')}</td>
+                        </tr>
+                    `;
+                }
+            });
+
+            const printZone = document.getElementById('receipt-print-zone');
+            printZone.innerHTML = `
+                <div class="print-header">
+                    <div class="print-title">Scontrino di Cassa</div>
+                    <div class="print-meta">
+                        Operatore: ${currentUser || 'Ospite'}<br>
+                        Data: ${new Date().toLocaleDateString('it-IT')} alle ${new Date().toLocaleTimeString('it-IT')}<br>
+                        Sessione ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()}
+                    </div>
+                </div>
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th>Taglio</th>
+                            <th style="text-align: center;">Q.tà</th>
+                            <th class="amount">Subtotale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows || '<tr><td colspan="3" style="text-align:center;">Nessun conteggio inserito</td></tr>'}
+                    </tbody>
+                </table>
+                <div class="print-total">
+                    <span>TOTALE GENERALE:</span>
+                    <span>€ ${total.toFixed(2).replace('.', ',')}</span>
+                </div>
+                <div class="print-footer">
+                    Grazie per aver utilizzato Contasoldi Euro<br>
+                    Resoconto archiviato nel Database.
+                </div>
+            `;
+        }
+
+        // Salva i dati in Firebase (Corretto per evitare errori con le chiavi decimali)
+        function saveToDatabase(total) {
+            if (!currentUser || !db) {
+                return Promise.resolve(false);
+            }
+
+            // Convertiamo le quantità in un array pulito per evitare i punti decimali nei nodi di Firebase
+            const sanitizedQuantities = [];
+            for (let value in quantities) {
+                if (quantities[value] > 0) {
+                    sanitizedQuantities.push({
+                        taglio: parseFloat(value),
+                        quantita: quantities[value]
+                    });
+                }
+            }
+
+            const reportData = {
+                total: total,
+                quantities: sanitizedQuantities,
+                date: new Date().toISOString()
+            };
+
+            // Salvataggio nel percorso specifico per ogni utente: reports/NOME_UTENTE/ID_UNICO
+            return db.ref('reports/' + currentUser).push().set(reportData)
+                .then(() => {
+                    showSaveIndicator();
+                    return true;
+                })
+                .catch(error => {
+                    console.error('Errore nel salvataggio su Firebase:', error);
+                    alert("Errore di salvataggio. Riprova.");
+                    return false;
+                });
+        }
+
+        // Salva, prepara la ricevuta di cassa ed esegue la stampa
+        function saveAndPrint() {
+            if (!currentUser) {
+                alert('Attenzione: Devi inserire il tuo codice utente prima di poter salvare!');
+                return;
+            }
+
+            let total = 0;
+            try {
+                const totalText = document.getElementById('total-amount').textContent;
+                const cleanTotal = totalText.replace('€', '').replace(/\s/g, '').replace('.', '').replace(',', '.');
+                total = parseFloat(cleanTotal) || 0;
+            } catch (e) {
+                console.error("Errore lettura totale:", e);
+            }
+            
+            // 1. Genera lo scontrino speciale nell'area invisibile
+            generatePrintReceipt(total);
+
+            // 2. Salva nel Database Firebase (sotto reports/NOME_UTENTE)
+            saveToDatabase(total);
+
+            // 3. Avvia la stampa (le regole @media print si attiveranno automaticamente, stampando SOLO lo scontrino)
+            setTimeout(() => {
+                window.print();
+            }, 300);
+        }
+
+        function showSaveIndicator() {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.style.display = 'block';
+            setTimeout(() => {
+                indicator.style.display = 'none';
+            }, 3000);
+        }
+
+        // Carica la cronologia leggendo direttamente la cartella specifica dell'utente loggato
+        function showHistory() {
+            if (!currentUser) {
+                alert('Devi accedere per vedere la cronologia!');
+                return;
+            }
+
+            if (!db) {
+                alert("Database non connesso.");
+                return;
+            }
+
+            document.getElementById('history-content').innerHTML = '<p style="text-align:center;padding:20px;">Caricamento in corso...</p>';
+            document.getElementById('historyModal').style.display = 'flex';
+
+            // Legge direttamente i dati da: reports/NOME_UTENTE
+            db.ref('reports/' + currentUser)
+                .once('value')
+                .then(snapshot => {
+                    if (!snapshot.exists()) {
+                        document.getElementById('history-content').innerHTML = 
+                            '<p style="text-align:center;color:#999;padding:20px;">Nessun resoconto salvato in precedenza</p>';
+                        return;
+                    }
+
+                    let reports = [];
+                    const data = snapshot.val();
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            reports.push(data[key]);
+                        }
+                    }
+                    
+                    // Ordina dai salvataggi più recenti
+                    reports.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    let html = '';
+                    reports.forEach(item => {
+                        const date = new Date(item.date);
+                        const dateStr = date.toLocaleDateString('it-IT');
+                        const timeStr = date.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'});
+                        const totalVal = typeof item.total === 'number' ? item.total : parseFloat(item.total) || 0;
+                        
+                        html += `
+                            <div class="history-item">
+                                <div class="history-date">📅 ${dateStr} alle ${timeStr}</div>
+                                <div class="history-total">💰 € ${totalVal.toFixed(2).replace('.', ',')}</div>
+                            </div>
+                        `;
+                    });
+
+                    document.getElementById('history-content').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Errore nel caricamento della cronologia:', error);
+                    document.getElementById('history-content').innerHTML = 
+                        '<p style="text-align:center;color:#e74c3c;padding:20px;">Errore durante il caricamento</p>';
+                });
+        }
+
+        function closeModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function closeHistory() {
+            document.getElementById('historyModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modals = ['reportModal', 'historyModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    if (modalId === 'reportModal') closeModal();
+                    else closeHistory();
+                }
+            });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
